@@ -23,8 +23,10 @@ body {
   .app__hdr {
     background: var(--color__hdr--bg);
     color: var(--color__hdr);
-    height: 40px;
+    height: 50px;
     padding: 10px;
+    display: flex;
+    align-items: center;
     .app__hdr__title {
       font-size: var(--font__hdr--size);
       font-weight: var(--font__hdr--weight);
