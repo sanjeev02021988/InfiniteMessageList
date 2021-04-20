@@ -1,5 +1,5 @@
 export const BASE_URL = "https://message-list.appspot.com";
-const LIMIT = 20;
+export const LIMIT = 20;
 
 let currentPageToken;
 export const fetchNextMessages = limit => {

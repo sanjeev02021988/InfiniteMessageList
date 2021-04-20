@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { debounce } from "lodash";
-import { fetchNextMessages } from "./Services/MessageService";
+import { fetchNextMessages, LIMIT } from "./Services/MessageService";
 import MessageCard from "./Components/MessageCard";
 import "./App.scss";
 
@@ -9,8 +9,13 @@ function App() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    fetchNextMessages().then(({ messages }) => setMessages(messages));
-  }, []);
+    // Fetch messages automatically as soon as there are less then a threshold.
+    if (messages.length < LIMIT) {
+      fetchNextMessages().then((data) =>
+        setMessages([...messages, ...data.messages])
+      );
+    }
+  }, [messages]);
 
   useEffect(() => {
     const ctrEle = ctrRef.current;
@@ -28,13 +33,9 @@ function App() {
     };
   }, []);
 
-  const removeMessage = useCallback(
-    (id) =>
-      setMessages((messages) =>
-        messages.filter((message) => message.id !== id)
-      ),
-    []
-  );
+  const removeMessage = useCallback((id) => {
+    setMessages((messages) => messages.filter((message) => message.id !== id));
+  }, []);
 
   return (
     <div className="app__ctr">
@@ -44,11 +45,7 @@ function App() {
       <div className="app__content" ref={ctrRef}>
         <div className="messages" role="list">
           {messages.map((msg) => (
-            <MessageCard
-              message={msg}
-              key={msg.id}
-              remove={removeMessage}
-            />
+            <MessageCard message={msg} key={msg.id} remove={removeMessage} />
           ))}
         </div>
       </div>
