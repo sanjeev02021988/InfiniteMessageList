@@ -1,4 +1,4 @@
-export const BASE_URL = "http://message-list.appspot.com";
+export const BASE_URL = "https://message-list.appspot.com";
 const LIMIT = 20;
 
 let currentPageToken;
