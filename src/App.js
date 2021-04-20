@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react";
-import { debounce } from "lodash";
+import { throttle } from "lodash";
 import { fetchNextMessages, LIMIT } from "./Services/MessageService";
 import MessageCard from "./Components/MessageCard";
 import "./App.scss";
@@ -19,13 +19,13 @@ function App() {
 
   useEffect(() => {
     const ctrEle = ctrRef.current;
-    const onScroll = debounce(function () {
+    const onScroll = throttle(function () {
       if (this.scrollTop + this.clientHeight * 2 > this.scrollHeight) {
         fetchNextMessages().then((data) => {
           setMessages((messages) => [...messages, ...data.messages]);
         });
       }
-    }, 100);
+    }, 500);
     ctrEle.addEventListener("scroll", onScroll);
 
     return () => {
